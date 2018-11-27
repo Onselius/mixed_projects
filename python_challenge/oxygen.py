@@ -1,13 +1,16 @@
 #! /usr/bin/python3
 # oxygen.py - Try to find hidden message in image file
 
-import requests
-from Pillow import Image
+import requests, os
+from PIL import Image
+
+path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "oxygen.png")
+print(path)
+img = Image.open(path)
 
 while True:
     try:
-        img = open("oxygen.png", "r")
-        img = Image.open
+        img = Image.open("oxygen.png")
         print("file opened")
         break
     except Exception as e:
@@ -15,7 +18,7 @@ while True:
         file_to_save = requests.get("http://www.pythonchallenge.com/pc/def/oxygen.png")
         file_to_save.raise_for_status()
         open("oxygen.png", "wb").write(file_to_save.content)
-        
-width, height = img.size()
-print(width)
-print(height)
+    
+width = img.width
+for value in img.size:
+    print(value)
