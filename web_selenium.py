@@ -3,20 +3,50 @@
 
 import sys
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 # Initiate start url
 browser = webdriver.Chrome()
-start_url = "https://github.com/"
+start_url = "https://github.com/onselius"
 
 browser.get(start_url)
 browser.set_window_position(0, 0)
 
 browser.find_element_by_link_text("Hemme02/Pannkaksgruppen").click()
-WebDriverWait(browser, 10).until(EC.title_contains("Pannkaksgruppen"))
-sys.exit()
+WebDriverWait(browser, 10).until(EC.visibility_of_element_located((By.LINK_TEXT, "src")))
 
+browser.find_element_by_link_text("src").click()
+WebDriverWait(browser, 10).until(EC.visibility_of_element_located((By.LINK_TEXT, "Pannkaksgruppen")))
+
+browser.find_element_by_link_text("Pannkaksgruppen").click()
+WebDriverWait(browser, 10).until(EC.visibility_of_element_located((By.XPATH, "//*[contains(@class, 'commits')]")))
+
+browser.find_element_by_xpath("//*[contains(@class, 'commits')]//a").click()
+
+# Generate a report textfile for git repo
+def remove_empty(elements):
+    new_list = []
+    for e in elements:
+        if e.text and e.text != "..":
+            new_list.append(e.text)
+    return new_list
+
+def test_list(elements):
+    for i in range(len(elements)):
+        print(str(i) + " " + elements[i].text)
+
+def fix_list(elements):
+    new_list = []
+    for e in elements:
+        new_list.append(e.text)
+    return new_list
+
+# Initiate start url
+start_url = "https://github.com/Hemme02/Pannkaksgruppen"
+
+browser.get(start_url)
 
 # Get repo title
 try:
